@@ -1,0 +1,1 @@
+[![Build Status](https://travis-ci.org/wlk/workout-tracker-akka-http.svg?branch=master)](https://travis-ci.org/wlk/workout-tracker-akka-http)
