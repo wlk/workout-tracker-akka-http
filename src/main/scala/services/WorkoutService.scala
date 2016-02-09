@@ -12,6 +12,15 @@ class WorkoutService {
     Workout(UserId(1), WorkoutId(4), "evening run 3", 10000, 3550, DateTime.now)
   )
 
+  def editWorkout(workout: Workout) = {
+    deleteWorkout(workout.workoutId)
+    workouts.add(workout)
+  }
+
+  def deleteWorkout(workoutId: WorkoutId): Unit = {
+    workouts.find(_.workoutId == workoutId).foreach(workouts.remove)
+  }
+
   def findInDateRangeByUser(userId: UserId, rangeStart: DateTime, rangeEnd: DateTime) = {
     workouts.filter(w => w.userId == userId && w.date >= rangeStart && w.date <= rangeEnd).toSet
   }

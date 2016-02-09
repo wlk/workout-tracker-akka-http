@@ -54,4 +54,21 @@ class WorkoutServiceSpec extends WorkoutTrackerSpec with BeforeAndAfter {
 
     workoutService.findInDateRangeByUser(testingUser.userId, rangeStart, rangeEnd).size shouldBe 4
   }
+
+  it should "remove workouts when requested" in {
+    workoutService.findAllByUser(testingUser.userId).size shouldBe 4
+    workoutService.deleteWorkout(WorkoutId(1))
+    workoutService.findAllByUser(testingUser.userId).size shouldBe 3
+  }
+
+  it should "edit workouts when requested" in {
+    val oldWorkout = workoutService.findAllByUser(testingUser.userId).find(_.workoutId == WorkoutId(1)).get
+
+    workoutService.editWorkout(oldWorkout.copy(distanceMeters = 5555))
+
+    val updatedWorkout = workoutService.findAllByUser(testingUser.userId).find(_.workoutId == WorkoutId(1)).get
+
+    updatedWorkout.distanceMeters shouldBe 5555
+
+  }
 }
