@@ -1,5 +1,5 @@
 import api.{SuccessfulUserSignUpResponse, UnsuccessfulUserSignUpResponse}
-import domain.{User, UserId}
+import domain.{SignUpUserRequest, User, UserId}
 import org.scalatest.BeforeAndAfter
 
 class UserServiceSpec extends WorkoutTrackerSpec with BeforeAndAfter {
@@ -22,13 +22,13 @@ class UserServiceSpec extends WorkoutTrackerSpec with BeforeAndAfter {
   }
 
   it should "signUp user when it doesn't exist" in {
-    userService.signUp("newUser", "password") shouldBe SuccessfulUserSignUpResponse()
+    userService.signUp(SignUpUserRequest("newUser", "password")) shouldBe SuccessfulUserSignUpResponse()
     userService.find("newUser", "password") shouldBe Some(User(UserId(2), "newUser", "password"))
   }
 
   it should "not signUp user when it already exists" in {
-    userService.signUp("newUser", "password") shouldBe SuccessfulUserSignUpResponse()
-    userService.signUp("newUser", "password") shouldBe UnsuccessfulUserSignUpResponse()
+    userService.signUp(SignUpUserRequest("newUser", "password")) shouldBe SuccessfulUserSignUpResponse()
+    userService.signUp(SignUpUserRequest("newUser", "password")) shouldBe UnsuccessfulUserSignUpResponse()
     userService.find("newUser", "password") shouldBe Some(User(UserId(2), "newUser", "password"))
   }
 }

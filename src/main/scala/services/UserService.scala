@@ -1,7 +1,7 @@
 package services
 
 import api._
-import domain.{User, UserId}
+import domain.{SignUpUserRequest, User, UserId}
 
 class UserService {
   val users = scala.collection.mutable.Set(
@@ -16,18 +16,18 @@ class UserService {
     users.find(u => u.userId == userId)
   }
 
-  def signUp(login: String, password: String): UserSignUpResponse = {
-    if (loginExists(login)) {
+  def signUp(signUpRequest: SignUpUserRequest): UserSignUpResponse = {
+    if (loginExists(signUpRequest.login)) {
       UnsuccessfulUserSignUpResponse()
     } else {
-      val newUserId = nextMaxUserId
-      users.add(User(newUserId, login, password))
+      val newUserId = nextUserId
+      users.add(User(newUserId, signUpRequest.login, signUpRequest.password))
       SuccessfulUserSignUpResponse()
     }
 
   }
 
-  def nextMaxUserId = {
+  private def nextUserId = {
     val currentMaxUserId = users.map(_.userId.value).max
     UserId(currentMaxUserId + 1)
   }

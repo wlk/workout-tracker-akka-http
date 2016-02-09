@@ -10,4 +10,8 @@ case class WorkoutId(value: Int) extends Id(value)
 
 case class User(userId: UserId, login: String, password: String)
 
+case class SignUpUserRequest(login: String, password: String)
+
 case class Workout(userId: UserId, workoutId: WorkoutId, name: String, distanceMeters: Int, durationSeconds: Int)
+
+case class RecordWorkoutRequest(userId: UserId, name: String, distanceMeters: Int, durationSeconds: Int)
