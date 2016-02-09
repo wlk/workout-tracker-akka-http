@@ -1,3 +1,5 @@
+enablePlugins(JavaAppPackaging)
+
 name := "workout-tracker-akka-http"
 
 version := "1.0"

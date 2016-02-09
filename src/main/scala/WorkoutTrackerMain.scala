@@ -1,3 +1,0 @@
-object WorkoutTrackerMain extends App {
-
-}
