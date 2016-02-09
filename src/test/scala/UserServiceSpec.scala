@@ -1,30 +1,34 @@
 import api.{SuccessfulUserSignUpResponse, UnsuccessfulUserSignUpResponse}
-import domain.User
-import org.scalatest.{FlatSpec, Matchers}
-import services.UserService
+import domain.{User, UserId}
+import org.scalatest.BeforeAndAfter
 
-class UserServiceSpec extends FlatSpec with Matchers {
+class UserServiceSpec extends WorkoutTrackerSpec with BeforeAndAfter {
+
+  before {
+    def cleanupUserService() = {
+      userService.users.clear()
+      userService.users.add(User(UserId(1), "user", "password"))
+    }
+
+    cleanupUserService()
+  }
 
   "UserService" should "not find users by login and password pair if it's incorrect" in {
-    val us = new UserService
-    us.find("test", "incorrect") shouldBe None
+    userService.find("test", "incorrect") shouldBe None
   }
 
   it should "find users if login and password are correct" in {
-    val us = new UserService
-    us.find("user", "password") shouldBe Some(User("user", "password"))
+    userService.find("user", "password") shouldBe Some(User(UserId(1), "user", "password"))
   }
 
   it should "signUp user when it doesn't exist" in {
-    val us = new UserService
-    us.signUp("newUser", "password") shouldBe SuccessfulUserSignUpResponse()
-    us.find("newUser", "password") shouldBe Some(User("newUser", "password"))
+    userService.signUp("newUser", "password") shouldBe SuccessfulUserSignUpResponse()
+    userService.find("newUser", "password") shouldBe Some(User(UserId(2), "newUser", "password"))
   }
 
   it should "not signUp user when it already exists" in {
-    val us = new UserService
-    us.signUp("newUser", "password") shouldBe SuccessfulUserSignUpResponse()
-    us.signUp("newUser", "password") shouldBe UnsuccessfulUserSignUpResponse()
-    us.find("newUser", "password") shouldBe Some(User("newUser", "password"))
+    userService.signUp("newUser", "password") shouldBe SuccessfulUserSignUpResponse()
+    userService.signUp("newUser", "password") shouldBe UnsuccessfulUserSignUpResponse()
+    userService.find("newUser", "password") shouldBe Some(User(UserId(2), "newUser", "password"))
   }
 }

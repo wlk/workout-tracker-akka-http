@@ -1,28 +1,36 @@
 package services
 
 import api._
-import domain.User
+import domain.{User, UserId}
 
 class UserService {
-  private val users = scala.collection.mutable.Set(
-    User("user", "password")
+  val users = scala.collection.mutable.Set(
+    User(UserId(1), "user", "password")
   )
 
   def find(login: String, password: String): Option[User] = {
     users.find(u => u.login == login && u.password == password)
   }
 
-  def signUp(login: String, password: String): UserSignUpResponse = {
-    val newUser = User(login, password)
+  def findByUserId(userId: UserId): Option[User] = {
+    users.find(u => u.userId == userId)
+  }
 
-    if (isSignedUp(newUser)) {
+  def signUp(login: String, password: String): UserSignUpResponse = {
+    if (loginExists(login)) {
       UnsuccessfulUserSignUpResponse()
     } else {
-      users.add(User(login, password))
+      val newUserId = nextMaxUserId
+      users.add(User(newUserId, login, password))
       SuccessfulUserSignUpResponse()
     }
 
   }
 
-  def isSignedUp(user: User) = users.contains(user)
+  def nextMaxUserId = {
+    val currentMaxUserId = users.map(_.userId.value).max
+    UserId(currentMaxUserId + 1)
+  }
+
+  def loginExists(login: String) = users.exists(_.login == login)
 }
