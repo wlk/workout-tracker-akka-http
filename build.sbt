@@ -13,6 +13,7 @@ libraryDependencies ++= {
   val akkaStreamVersion = "2.0.3"
   val scalaTestVersion  = "3.0.0-M15"
   val nscalaTimeVersion = "2.8.0"
+
   Seq(
     "com.typesafe.akka" %% "akka-actor"                           % akkaVersion,
     "com.typesafe.akka" %% "akka-stream-experimental"             % akkaStreamVersion,
