@@ -1,5 +1,7 @@
 package domain
 
+import com.github.nscala_time.time.Imports._
+
 class Id(value: Int) {
   def next = new Id(value + 1)
 }
@@ -12,6 +14,6 @@ case class User(userId: UserId, login: String, password: String)
 
 case class SignUpUserRequest(login: String, password: String)
 
-case class Workout(userId: UserId, workoutId: WorkoutId, name: String, distanceMeters: Int, durationSeconds: Int)
+case class Workout(userId: UserId, workoutId: WorkoutId, name: String, distanceMeters: Int, durationSeconds: Int, date: DateTime)
 
-case class RecordWorkoutRequest(userId: UserId, name: String, distanceMeters: Int, durationSeconds: Int)
+case class RecordWorkoutRequest(userId: UserId, name: String, distanceMeters: Int, durationSeconds: Int, date: DateTime)

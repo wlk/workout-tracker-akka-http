@@ -1,11 +1,33 @@
-import domain.{RecordWorkoutRequest, WorkoutId, UserId, Workout}
+import api.SuccessfulRecordWorkoutResponse
+import domain._
+import com.github.nscala_time.time.Imports._
+import org.scalatest.BeforeAndAfter
 
-class WorkoutServiceSpec extends WorkoutTrackerSpec {
+class WorkoutServiceSpec extends WorkoutTrackerSpec with BeforeAndAfter {
+
+  before {
+    def cleanupWorkoutService() = {
+      workoutService.workouts.clear()
+
+      val testingWorkouts = scala.collection.mutable.Set(
+        Workout(UserId(1), WorkoutId(1), "morning run", 10000,  3700, DateTime.now - 1.day - 1.hour),
+        Workout(UserId(1), WorkoutId(2), "evening run", 10000,  3650, DateTime.now - 1.day),
+        Workout(UserId(1), WorkoutId(3), "morning run 2", 10000,  3600, DateTime.now - 1.hour),
+        Workout(UserId(1), WorkoutId(4), "evening run 3", 10000,  3550, DateTime.now)
+      )
+
+      testingWorkouts.foreach(workoutService.workouts.add)
+    }
+
+    cleanupWorkoutService()
+  }
 
   "WorkoutService" should "find all workouts by given user" in {
 
-    workoutService.findAllByUser(testingUser.userId).find(_.workoutId == WorkoutId(1)) shouldBe
-      Some(Workout(UserId(1), WorkoutId(1), "morning run", 10000,  3700))
+    val workoutFound = workoutService.findAllByUser(testingUser.userId).find(_.workoutId == WorkoutId(1)).get
+
+    workoutFound.workoutId shouldBe WorkoutId(1)
+    workoutFound.userId shouldBe UserId(1)
 
     workoutService.findAllByUser(testingUser.userId).size shouldBe 4
   }
@@ -13,9 +35,9 @@ class WorkoutServiceSpec extends WorkoutTrackerSpec {
   it should "record new workouts" in {
     workoutService.findAllByUser(testingUser.userId).size shouldBe 4
 
-    val newWorkoutRequest = RecordWorkoutRequest(testingUser.userId, "testing my new gps watch", 1000, 600)
+    val newWorkoutRequest = RecordWorkoutRequest(testingUser.userId, "testing my new gps watch", 1000, 600, DateTime.now)
 
-    workoutService.recordNewWorkout(newWorkoutRequest)
+    workoutService.recordNewWorkout(newWorkoutRequest) shouldBe SuccessfulRecordWorkoutResponse()
 
     workoutService.findAllByUser(testingUser.userId).size shouldBe 5
 
@@ -23,5 +45,12 @@ class WorkoutServiceSpec extends WorkoutTrackerSpec {
 
     newWorkout.name shouldBe "testing my new gps watch"
     newWorkout.workoutId shouldBe WorkoutId(5)
+  }
+
+  it should "find workouts in given date range" in {
+    val rangeStart = DateTime.now - 10.years
+    val rangeEnd = DateTime.now + 10.years
+
+    workoutService.findInDateRangeByUser(testingUser.userId, rangeStart, rangeEnd).size shouldBe 4
   }
 }
