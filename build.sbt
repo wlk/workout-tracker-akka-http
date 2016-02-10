@@ -1,9 +1,8 @@
 enablePlugins(JavaAppPackaging)
 
 name := "workout-tracker-akka-http"
-
+organization := "com.wlangiewicz"
 version := "1.0"
-
 scalaVersion := "2.11.7"
 
 scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8")
@@ -25,3 +24,5 @@ libraryDependencies ++= {
     "org.scalatest"     %% "scalatest"                            % scalaTestVersion % "test"
   )
 }
+
+Revolver.settings

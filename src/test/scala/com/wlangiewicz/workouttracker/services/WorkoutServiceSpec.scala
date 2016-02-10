@@ -2,7 +2,6 @@ package com.wlangiewicz.workouttracker.services
 
 import com.github.nscala_time.time.Imports._
 import com.wlangiewicz.workouttracker.WorkoutTrackerSpec
-import com.wlangiewicz.workouttracker.api.SuccessfulRecordWorkoutResponse
 import com.wlangiewicz.workouttracker.domain._
 import org.scalatest.BeforeAndAfter
 

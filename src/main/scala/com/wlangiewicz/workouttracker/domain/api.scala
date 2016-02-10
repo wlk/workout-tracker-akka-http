@@ -1,8 +1,8 @@
-package com.wlangiewicz.workouttracker.api
+package com.wlangiewicz.workouttracker.domain
 
 sealed trait UserSignUpResponse
 
-case class SuccessfulUserSignUpResponse() extends UserSignUpResponse
+case class SuccessfulUserSignUpResponse(apiKey: String) extends UserSignUpResponse
 
 case class UnsuccessfulUserSignUpResponse() extends UserSignUpResponse
 

@@ -10,7 +10,7 @@ case class UserId(value: Int) extends Id(value)
 
 case class WorkoutId(value: Int) extends Id(value)
 
-case class User(userId: UserId, login: String, password: String)
+case class User(userId: UserId, login: String, password: String, apiKey: String)
 
 case class SignUpUserRequest(login: String, password: String)
 
