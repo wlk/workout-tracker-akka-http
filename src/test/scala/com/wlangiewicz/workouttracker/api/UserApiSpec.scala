@@ -1,9 +1,9 @@
 package com.wlangiewicz.workouttracker.api
 
-import com.wlangiewicz.workouttracker.domain.{SuccessfulUserSignUpResponse, SignUpUserRequest}
+import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._ // possibly false report by Intellij
 import akka.http.scaladsl.model.ContentTypes._
 import akka.http.scaladsl.model.StatusCodes._
-import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._ // false report by Intellij
+import com.wlangiewicz.workouttracker.domain._
 
 class UserApiSpec extends ApiSpec {
 
@@ -12,7 +12,17 @@ class UserApiSpec extends ApiSpec {
       status shouldBe OK
       contentType shouldBe `application/json`
       val response = responseAs[SuccessfulUserSignUpResponse]
-      response.apiKey.length shouldBe 16
+      response.apiKey.apiKey.length shouldBe 16
+    }
+
+    Post("/user/signup", SignUpUserRequest("newUser2", "myPassword")) ~> routes ~> check {
+      val response = responseAs[SuccessfulUserSignUpResponse]
+      val apiKey = response.apiKey
+
+      Post("/user/login", LoginUserRequest("newUser2", "myPassword")) ~> routes ~> check {
+        val response = responseAs[ApiKey]
+        response shouldBe apiKey
+      }
     }
   }
 

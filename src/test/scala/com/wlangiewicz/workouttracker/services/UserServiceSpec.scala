@@ -9,7 +9,7 @@ class UserServiceSpec extends WorkoutTrackerSpec with BeforeAndAfter {
   before {
     def cleanupUserService() = {
       userService.users.clear()
-      userService.users.add(User(UserId(1), "user", "password", userService.randomApiKey))
+      userService.users.add(User(UserId(1), "user", "password", ApiKey(userService.randomApiKey)))
     }
 
     cleanupUserService()
@@ -31,7 +31,7 @@ class UserServiceSpec extends WorkoutTrackerSpec with BeforeAndAfter {
     val user = userService.find("newUser", "password").get
     user.userId shouldBe UserId(2)
     user.login shouldBe "newUser"
-    user.apiKey.length shouldBe 16
+    user.apiKey.apiKey.length shouldBe 16
   }
 
   it should "not signUp user when it already exists" in {

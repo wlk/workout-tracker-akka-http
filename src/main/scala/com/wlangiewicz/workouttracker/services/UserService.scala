@@ -6,11 +6,15 @@ import scala.util.Random
 
 class UserService {
   val users = scala.collection.mutable.Set(
-    User(UserId(1), "user", "password", "key")
+    User(UserId(1), "user", "password", ApiKey("key"))
   )
 
-  def findByApiKey(apiKey: String) = {
+  def findByApiKey(apiKey: ApiKey) = {
     users.find(u => u.apiKey == apiKey)
+  }
+
+  def apiKeyForUser(login: String, password: String): Option[ApiKey] = {
+    find(login, password).map(_.apiKey)
   }
 
   def find(login: String, password: String): Option[User] = {
@@ -26,7 +30,7 @@ class UserService {
       Left(UnsuccessfulUserSignUpResponse())
     } else {
       val newUserId = nextUserId
-      val apiKey = randomApiKey
+      val apiKey = ApiKey(randomApiKey)
       users.add(User(newUserId, signUpRequest.login, signUpRequest.password, apiKey))
       Right(SuccessfulUserSignUpResponse(apiKey))
     }

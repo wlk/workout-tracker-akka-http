@@ -19,3 +19,8 @@ Create an application that tracks workouts (jogging) for logged in users:
 - akka-http
 - Scala
 - nscala-time (Scala wrapper for Joda Time)
+
+
+## TODO
+
+* better error handling (returning correct HTTP codes + helpful messages)
