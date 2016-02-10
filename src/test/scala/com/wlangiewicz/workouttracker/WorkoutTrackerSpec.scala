@@ -1,6 +1,8 @@
+package com.wlangiewicz.workouttracker
+
+import com.wlangiewicz.workouttracker.services._
 import domain.UserId
 import org.scalatest.{FlatSpec, Matchers}
-import services.{ReportingService, UserService, WorkoutService}
 
 trait WorkoutTrackerSpec extends FlatSpec with Matchers {
   val userService = new UserService

@@ -1,5 +1,8 @@
-import api.{SuccessfulUserSignUpResponse, UnsuccessfulUserSignUpResponse}
-import domain.{SignUpUserRequest, User, UserId}
+package com.wlangiewicz.workouttracker.services
+
+import com.wlangiewicz.workouttracker.WorkoutTrackerSpec
+import com.wlangiewicz.workouttracker.api._
+import com.wlangiewicz.workouttracker.domain._
 import org.scalatest.BeforeAndAfter
 
 class UserServiceSpec extends WorkoutTrackerSpec with BeforeAndAfter {

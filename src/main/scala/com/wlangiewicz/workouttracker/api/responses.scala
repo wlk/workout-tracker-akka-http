@@ -1,4 +1,4 @@
-package api
+package com.wlangiewicz.workouttracker.api
 
 sealed trait UserSignUpResponse
 

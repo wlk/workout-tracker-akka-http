@@ -1,6 +1,6 @@
-package services
+package com.wlangiewicz.workouttracker.services
 
-import domain.{Report, Workout}
+import com.wlangiewicz.workouttracker.domain._
 
 class ReportingService {
   def weeklyReport(workouts: Set[Workout]): Map[Int, Report] = {

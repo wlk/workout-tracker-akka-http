@@ -1,7 +1,7 @@
-package services
+package com.wlangiewicz.workouttracker.services
 
-import api._
-import domain.{SignUpUserRequest, User, UserId}
+import com.wlangiewicz.workouttracker.api._
+import com.wlangiewicz.workouttracker.domain._
 
 class UserService {
   val users = scala.collection.mutable.Set(

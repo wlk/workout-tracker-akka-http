@@ -1,4 +1,4 @@
-package domain
+package com.wlangiewicz.workouttracker.domain
 
 import com.github.nscala_time.time.Imports._
 

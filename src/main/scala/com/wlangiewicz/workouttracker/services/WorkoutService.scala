@@ -1,8 +1,8 @@
-package services
+package com.wlangiewicz.workouttracker.services
 
-import api._
 import com.github.nscala_time.time.Imports._
-import domain._
+import com.wlangiewicz.workouttracker.api._
+import com.wlangiewicz.workouttracker.domain._
 
 class WorkoutService {
   val workouts = scala.collection.mutable.Set(

@@ -1,5 +1,8 @@
+package com.wlangiewicz.workouttracker.services
+
 import com.github.nscala_time.time.Imports._
-import domain.{WorkoutId, UserId, Workout}
+import com.wlangiewicz.workouttracker.WorkoutTrackerSpec
+import com.wlangiewicz.workouttracker.domain._
 
 class ReportingServiceSpec extends WorkoutTrackerSpec {
 
@@ -20,7 +23,7 @@ class ReportingServiceSpec extends WorkoutTrackerSpec {
     report.totalDurationSeconds shouldBe 28700
     report.averageDistance shouldBe 10000.0
     report.averageDuration shouldBe 3587.5
-    report.averageSpeed shouldBe ( 10.0 +- 0.05)
+    report.averageSpeed shouldBe (10.0 +- 0.05)
   }
 
   it should "return weekly reports for requested workouts" in {
