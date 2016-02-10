@@ -3,6 +3,12 @@ package services
 import domain.{Report, Workout}
 
 class ReportingService {
+  def weeklyReport(workouts: Set[Workout]): Map[Int, Report] = {
+    workouts.groupBy(_.date.getWeekOfWeekyear).map {
+      case (week, weeklyWorkouts) => (week, report(weeklyWorkouts))
+    }
+  }
+
   def report(workouts: Set[Workout]) = {
     val elements = workouts.size
 

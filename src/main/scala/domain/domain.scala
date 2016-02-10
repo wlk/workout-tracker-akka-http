@@ -2,7 +2,7 @@ package domain
 
 import com.github.nscala_time.time.Imports._
 
-class Id(value: Int) {
+sealed class Id(value: Int) {
   def next = new Id(value + 1)
 }
 
