@@ -12,6 +12,20 @@ class WorkoutService {
     Workout(UserId(1), WorkoutId(4), "evening run 3", 10000, 3550, DateTime.now)
   )
 
+  def findAllByUserInRangeGroupedWeekly(userId: UserId, rangeStart: DateTime, rangeEnd: DateTime) = {
+    findInDateRangeByUser(userId, rangeStart, rangeEnd).groupBy(_.date.getWeekOfWeekyear)
+  }
+
+  def findInDateRangeByUser(userId: UserId, rangeStart: DateTime, rangeEnd: DateTime) = {
+    workouts.filter(w => w.userId == userId && w.date >= rangeStart && w.date <= rangeEnd).toSet
+  }
+
+  def findAllByUserGroupedWeekly(userId: UserId): Map[Int, Set[Workout]] = {
+    findAllByUser(userId).groupBy(_.date.getWeekOfWeekyear)
+  }
+
+  def findAllByUser(userId: UserId): Set[Workout] = workouts.filter(w => w.userId == userId).toSet
+
   def editWorkout(workout: Workout) = {
     deleteWorkout(workout.workoutId)
     workouts.add(workout)
@@ -19,10 +33,6 @@ class WorkoutService {
 
   def deleteWorkout(workoutId: WorkoutId): Unit = {
     workouts.find(_.workoutId == workoutId).foreach(workouts.remove)
-  }
-
-  def findInDateRangeByUser(userId: UserId, rangeStart: DateTime, rangeEnd: DateTime) = {
-    workouts.filter(w => w.userId == userId && w.date >= rangeStart && w.date <= rangeEnd).toSet
   }
 
   def recordNewWorkout(newWorkoutRequest: RecordWorkoutRequest): RecordWorkoutResponse = {
@@ -45,7 +55,5 @@ class WorkoutService {
     val currentMaxWorkoutId = workouts.map(_.workoutId.value).max
     WorkoutId(currentMaxWorkoutId + 1)
   }
-
-  def findAllByUser(userId: UserId): Set[Workout] = workouts.filter(w => w.userId == userId).toSet
 
 }
