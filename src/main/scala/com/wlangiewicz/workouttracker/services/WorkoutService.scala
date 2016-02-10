@@ -34,15 +34,15 @@ class WorkoutService {
     workouts.find(_.workoutId == workoutId).foreach(workouts.remove)
   }
 
-  def recordNewWorkout(newWorkoutRequest: RecordWorkoutRequest): RecordWorkoutResponse = {
+  def recordNewWorkout(newWorkoutRequest: RecordWorkoutRequest): Either[UnsuccessfulRecordWorkoutResponse, SuccessfulRecordWorkoutResponse] = {
     if (!isValidRequest(newWorkoutRequest)) {
-      UnsuccessfulRecordWorkoutResponse()
+      Left(UnsuccessfulRecordWorkoutResponse())
     } else {
       val workoutId = nextWorkoutId
       workouts
         .add(Workout(newWorkoutRequest.userId, workoutId, newWorkoutRequest.name, newWorkoutRequest
           .distanceMeters, newWorkoutRequest.durationSeconds, newWorkoutRequest.date))
-      SuccessfulRecordWorkoutResponse()
+      Right(SuccessfulRecordWorkoutResponse(workoutId))
     }
   }
 

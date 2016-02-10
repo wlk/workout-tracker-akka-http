@@ -5,15 +5,13 @@ import com.wlangiewicz.workouttracker.domain._
 import scala.util.Random
 
 class UserService {
-  def findByApiKey(apiKey: String) = {
-    users.find(u => u.apiKey == apiKey)
-  }
-
   val users = scala.collection.mutable.Set(
     User(UserId(1), "user", "password", "key")
   )
 
-  def randomApiKey = Random.alphanumeric.take(16).mkString
+  def findByApiKey(apiKey: String) = {
+    users.find(u => u.apiKey == apiKey)
+  }
 
   def find(login: String, password: String): Option[User] = {
     users.find(u => u.login == login && u.password == password)
@@ -34,6 +32,8 @@ class UserService {
     }
 
   }
+
+  def randomApiKey = Random.alphanumeric.take(16).mkString
 
   private def nextUserId = {
     val currentMaxUserId = users.map(_.userId.value).max
