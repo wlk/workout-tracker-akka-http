@@ -5,8 +5,7 @@ import com.wlangiewicz.workouttracker.domain._
 class UserDao {
   val users = scala.collection.mutable.Set(
     User(UserId(1), "user", "password", ApiKey("key")),
-    User(UserId(2), "userWithoutWorkouts", "password", ApiKey("aosijdf2309g"))
-  )
+    User(UserId(2), "userWithoutWorkouts", "password", ApiKey("aosijdf2309g")))
 
   def add(user: User) = {
     users.add(user)

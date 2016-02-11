@@ -1,9 +1,21 @@
 package com.wlangiewicz.workouttracker.services
 
+import com.wlangiewicz.workouttracker.api.ApiException
 import com.wlangiewicz.workouttracker.dao.WorkoutDao
-import com.wlangiewicz.workouttracker.domain.{Workout, SuccessfulRecordWorkoutResponse, UnsuccessfulRecordWorkoutResponse, RecordWorkoutRequest}
+import com.wlangiewicz.workouttracker.domain._
+
+import scala.util.{ Failure, Success, Try }
 
 class WorkoutService(workoutDao: WorkoutDao) {
+
+  def deleteWorkout(user: User, workoutId: WorkoutId): Try[WorkoutId] = {
+    if (workoutDao.isOwner(user.userId, workoutId)) {
+      workoutDao.deleteWorkout(workoutId)
+      Success(workoutId)
+    } else {
+      Failure(new ApiException("you don't own this workout"))
+    }
+  }
 
   def recordNewWorkout(newWorkoutRequest: RecordWorkoutRequest): Either[UnsuccessfulRecordWorkoutResponse, SuccessfulRecordWorkoutResponse] = {
     if (!workoutDao.isValidWorkout(newWorkoutRequest)) {

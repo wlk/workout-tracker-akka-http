@@ -33,6 +33,13 @@ trait WorkoutApi extends JsonFormats {
                 }
               }
             }
+          } ~
+          path("delete") {
+            (delete & entity(as[DeleteWorkoutRequest])) { deleteRequest =>
+            complete {
+              workoutService.deleteWorkout(user, deleteRequest.workoutId)
+            }
+            }
           }
       }
     }

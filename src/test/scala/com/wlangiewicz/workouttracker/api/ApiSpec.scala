@@ -12,5 +12,5 @@ class ApiSpec extends WorkoutTrackerSpec with ScalatestRouteTest with JsonFormat
   val validCredentials = addCredentials(BasicHttpCredentials(userDao.findByUserId(UserId(1)).get.apiKey.apiKey, ""))
   val validCredentialsUserWithoutWorkouts = addCredentials(BasicHttpCredentials(userDao.findByUserId(UserId(2)).get.apiKey.apiKey, ""))
 
-  val invalidCredentials = addCredentials(BasicHttpCredentials("abc", ""))
+  val invalidCredentials = addCredentials(BasicHttpCredentials("this is incorrect api key", ""))
 }

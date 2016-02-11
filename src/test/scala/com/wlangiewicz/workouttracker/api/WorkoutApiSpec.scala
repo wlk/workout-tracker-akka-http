@@ -2,7 +2,7 @@ package com.wlangiewicz.workouttracker.api
 
 import akka.http.scaladsl.model.StatusCodes._
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
-import com.wlangiewicz.workouttracker.domain.{Workout, RecordWorkoutRequest}
+import com.wlangiewicz.workouttracker.domain._
 import com.github.nscala_time.time.Imports._
 
 class WorkoutApiSpec extends ApiSpec {
@@ -52,10 +52,27 @@ class WorkoutApiSpec extends ApiSpec {
     }
   }
 
-  ignore should "allow user to delete it's own workout" in {
+  it should "allow user to delete it's own workout" in {
+    val request = DeleteWorkoutRequest(WorkoutId(1))
+    Delete("/workouts/delete", request) ~> validCredentials ~> routes ~> check {
+
+      Get("/workouts/all") ~> validCredentials ~> routes ~> check {
+        val workouts = responseAs[List[Workout]]
+        workouts.map(_.workoutId) should not contain WorkoutId(1)
+      }
+    }
   }
 
-  ignore should "not allow user to delete someone's else workout" in {
+  it should "not allow user to delete someone's else workout" in {
+    val request = DeleteWorkoutRequest(WorkoutId(2))
+    Delete("/workouts/delete", request) ~> validCredentialsUserWithoutWorkouts ~> routes ~> check {
+      status shouldBe BadRequest
+
+      Get("/workouts/all") ~> validCredentials ~> routes ~> check {
+        val workouts = responseAs[List[Workout]]
+        workouts.map(_.workoutId) should contain(WorkoutId(2))
+      }
+    }
   }
 
   ignore should "allow user to edit workout he owns" in {

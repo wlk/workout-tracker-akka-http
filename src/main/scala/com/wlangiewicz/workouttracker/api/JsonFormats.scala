@@ -11,7 +11,7 @@ trait JsonFormats extends DefaultJsonProtocol {
 
     override def read(json: JsValue): DateTime = json match {
       case JsNumber(millis) => new DateTime(millis.toLong)
-      case _ => throw new RuntimeException("incorrect json date format")
+      case _ => throw new ApiException("incorrect json date format")
     }
   }
 
@@ -31,5 +31,6 @@ trait JsonFormats extends DefaultJsonProtocol {
   implicit val UnsuccessfulRecordWorkoutResponseFormat = jsonFormat0(UnsuccessfulRecordWorkoutResponse)
 
   implicit val WorkoutFormat = jsonFormat6(Workout)
+  implicit val DeleteWorkoutRequestFormat = jsonFormat1(DeleteWorkoutRequest)
 
 }
