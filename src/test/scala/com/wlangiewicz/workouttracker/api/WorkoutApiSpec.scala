@@ -5,8 +5,6 @@ import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import com.wlangiewicz.workouttracker.domain.{Workout, RecordWorkoutRequest}
 import com.github.nscala_time.time.Imports._
 
-// possibly false report by Intellij
-
 class WorkoutApiSpec extends ApiSpec {
   "WorkoutApi" should "reject users without Basic Authentication" in {
     Get("/workouts/all") ~> routes ~> check {
@@ -23,6 +21,14 @@ class WorkoutApiSpec extends ApiSpec {
   it should "allow requests from authenticated users" in {
     Get("/workouts/all") ~> validCredentials ~> routes ~> check {
       status shouldBe OK
+      responseAs[List[Workout]].size should be > 1
+    }
+  }
+
+  it should "not list workouts if user has none" in {
+    Get("/workouts/all") ~> validCredentialsUserWithoutWorkouts ~> routes ~> check {
+      status shouldBe OK
+      responseAs[List[Workout]].size shouldBe 0
     }
   }
 
@@ -40,10 +46,22 @@ class WorkoutApiSpec extends ApiSpec {
   }
 
   it should "not allow creating invalid workouts" in {
-    val request = RecordWorkoutRequest(testingUser.userId, "testing workout", 10000, 3600, new DateTime(1970, 2, 15, 12, 0, 0, 0)) // invalid year
+    val request = RecordWorkoutRequest(testingUser.userId, "testing workout", 10000, 3600, new DateTime(1970, 2, 15, 12, 0, 0, 0)) // year out of allowed range
     Post("/workouts/new", request) ~> validCredentials ~> routes ~> check {
       status shouldBe BadRequest
     }
+  }
+
+  ignore should "allow user to delete it's own workout" in {
+  }
+
+  ignore should "not allow user to delete someone's else workout" in {
+  }
+
+  ignore should "allow user to edit workout he owns" in {
+  }
+
+  ignore should "not allow user to edit someone's else workout" in {
   }
 
 }

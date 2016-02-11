@@ -14,7 +14,7 @@ class UserServiceSpec extends WorkoutTrackerSpec with BeforeAndAfter {
     val response = userService.signUp(SignUpUserRequest("newUser", "password")).right.get
     response shouldBe an[SuccessfulUserSignUpResponse]
     val user = userDao.find("newUser", "password").get
-    user.userId shouldBe UserId(2)
+    user.userId shouldBe UserId(3)
     user.login shouldBe "newUser"
     user.apiKey.apiKey.length shouldBe 16
   }
@@ -23,7 +23,7 @@ class UserServiceSpec extends WorkoutTrackerSpec with BeforeAndAfter {
     userService.signUp(SignUpUserRequest("newUser", "password")).right.get shouldBe an[SuccessfulUserSignUpResponse]
     userService.signUp(SignUpUserRequest("newUser", "password")).left.get shouldBe an[UnsuccessfulUserSignUpResponse]
     val user = userDao.find("newUser", "password").get
-    user.userId shouldBe UserId(2)
+    user.userId shouldBe UserId(3)
     user.login shouldBe "newUser"
   }
 
