@@ -6,10 +6,12 @@ import akka.http.scaladsl.server.directives.Credentials
 import com.wlangiewicz.workouttracker.dao._
 import com.wlangiewicz.workouttracker.domain._
 import com.wlangiewicz.workouttracker.dao.WorkoutDao
+import com.wlangiewicz.workouttracker.services.WorkoutService
 
 trait WorkoutApi extends JsonFormats {
   val workoutDao: WorkoutDao
   val userDao: UserDao
+  val workoutService: WorkoutService
 
   val workoutApiRoutes =
     pathPrefix("workouts") {
@@ -17,11 +19,17 @@ trait WorkoutApi extends JsonFormats {
         path("all") {
           get {
             complete {
-              val allWorkouts = workoutDao.findAllByUser(user.userId)
-              allWorkouts
+              workoutDao.findAllByUser(user.userId)
             }
           }
-        }
+        } ~
+          path("new") {
+            (post & entity(as[RecordWorkoutRequest])) { newWorkoutRequest =>
+              complete {
+                workoutService.recordNewWorkout(newWorkoutRequest)
+              }
+            }
+          }
       }
     }
 
