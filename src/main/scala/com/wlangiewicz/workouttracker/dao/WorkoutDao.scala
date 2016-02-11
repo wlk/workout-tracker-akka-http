@@ -1,14 +1,14 @@
-package com.wlangiewicz.workouttracker.services
+package com.wlangiewicz.workouttracker.dao
 
 import com.github.nscala_time.time.Imports._
 import com.wlangiewicz.workouttracker.domain._
 
-class WorkoutService {
+class WorkoutDao {
   val workouts = scala.collection.mutable.Set(
-    Workout(UserId(1), WorkoutId(1), "morning run", 10000, 3700, DateTime.now - 1.day - 1.hour),
-    Workout(UserId(1), WorkoutId(2), "evening run", 10000, 3650, DateTime.now - 1.day),
-    Workout(UserId(1), WorkoutId(3), "morning run 2", 10000, 3600, DateTime.now - 1.hour),
-    Workout(UserId(1), WorkoutId(4), "evening run 3", 10000, 3550, DateTime.now)
+    Workout(UserId(1), WorkoutId(1), "morning run", 10000, 3700, new DateTime(2016, 2, 9, 11, 0, 0, 0)),
+    Workout(UserId(1), WorkoutId(2), "evening run", 10000, 3650, new DateTime(2016, 2, 9, 12, 0, 0, 0)),
+    Workout(UserId(1), WorkoutId(3), "morning run 2", 10000, 3600, new DateTime(2016, 2, 10, 12, 0, 0, 0)),
+    Workout(UserId(1), WorkoutId(4), "evening run 3", 10000, 3550, new DateTime(2016, 2, 15, 12, 0, 0, 0))
   )
 
   def findAllByUserInRangeGroupedWeekly(userId: UserId, rangeStart: DateTime, rangeEnd: DateTime) = {
@@ -30,12 +30,16 @@ class WorkoutService {
     workouts.add(workout)
   }
 
+  def isOwner(userId: UserId, workoutId: WorkoutId) = {
+    workouts.exists(w => w.workoutId == workoutId && w.userId == userId)
+  }
+
   def deleteWorkout(workoutId: WorkoutId): Unit = {
     workouts.find(_.workoutId == workoutId).foreach(workouts.remove)
   }
 
   def recordNewWorkout(newWorkoutRequest: RecordWorkoutRequest): Either[UnsuccessfulRecordWorkoutResponse, SuccessfulRecordWorkoutResponse] = {
-    if (!isValidRequest(newWorkoutRequest)) {
+    if (!isValidWorkout(newWorkoutRequest)) {
       Left(UnsuccessfulRecordWorkoutResponse())
     } else {
       val workoutId = nextWorkoutId
@@ -46,7 +50,7 @@ class WorkoutService {
     }
   }
 
-  def isValidRequest(newWorkoutRequest: RecordWorkoutRequest): Boolean = {
+  def isValidWorkout(newWorkoutRequest: RecordWorkoutRequest): Boolean = {
     newWorkoutRequest.date > DateTime.now - 100.years // bogus condition for invalid request
   }
 

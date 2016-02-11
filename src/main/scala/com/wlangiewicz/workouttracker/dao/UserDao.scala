@@ -1,10 +1,10 @@
-package com.wlangiewicz.workouttracker.services
+package com.wlangiewicz.workouttracker.dao
 
 import com.wlangiewicz.workouttracker.domain._
 
 import scala.util.Random
 
-class UserService {
+class UserDao {
   val users = scala.collection.mutable.Set(
     User(UserId(1), "user", "password", ApiKey("key"))
   )
