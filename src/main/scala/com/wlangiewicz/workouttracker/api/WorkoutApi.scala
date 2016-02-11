@@ -1,11 +1,9 @@
 package com.wlangiewicz.workouttracker.api
 
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
-import akka.http.scaladsl.model.HttpHeader
 import akka.http.scaladsl.server.Directives._
-import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.server.directives.Credentials
-import com.wlangiewicz.workouttracker.dao.{WorkoutDao, UserDao}
+import com.wlangiewicz.workouttracker.dao._
 import com.wlangiewicz.workouttracker.domain._
 import com.wlangiewicz.workouttracker.dao.WorkoutDao
 

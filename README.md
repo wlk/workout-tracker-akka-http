@@ -26,3 +26,4 @@ Create an application that tracks workouts (jogging) for logged in users:
 Following things are left TODO (or some of them will not be done because it's just a demo project')
 * better error handling (returning correct HTTP codes + helpful messages)
 * not throwing exceptions (although there are not many places where this happens)
+* {User,Workout}Services control logic in which new Ids are created

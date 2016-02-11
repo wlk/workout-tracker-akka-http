@@ -34,22 +34,6 @@ class WorkoutDaoSpec extends WorkoutTrackerSpec with BeforeAndAfter {
     workoutDao.findAllByUser(testingUser.userId).size shouldBe 4
   }
 
-  it should "record new workouts" in {
-    workoutDao.findAllByUser(testingUser.userId).size shouldBe 4
-
-    val newWorkoutRequest = RecordWorkoutRequest(testingUser.userId, "testing my new gps watch", 1000, 600, DateTime
-      .now)
-
-    workoutDao.recordNewWorkout(newWorkoutRequest).right.get shouldBe an[SuccessfulRecordWorkoutResponse]
-
-    workoutDao.findAllByUser(testingUser.userId).size shouldBe 5
-
-    val newWorkout = workoutDao.findAllByUser(testingUser.userId).find(_.workoutId == WorkoutId(5)).get
-
-    newWorkout.name shouldBe "testing my new gps watch"
-    newWorkout.workoutId shouldBe WorkoutId(5)
-  }
-
   it should "find workouts in given date range" in {
     val date = new DateTime(2016, 2, 9, 11, 0, 0, 0)
     val rangeStart = date - 10.years

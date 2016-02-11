@@ -4,16 +4,18 @@ import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import akka.http.scaladsl.server.Directives._
 import com.wlangiewicz.workouttracker.dao.UserDao
 import com.wlangiewicz.workouttracker.domain._
+import com.wlangiewicz.workouttracker.services.UserService
 
 trait UserApi extends JsonFormats {
   val userDao: UserDao
+  val userService: UserService
 
   val userApiRoutes =
     pathPrefix("user") {
       path("signup") {
         (post & entity(as[SignUpUserRequest])) { signUpRequest =>
           complete {
-            val response = userDao.signUp(signUpRequest)
+            val response = userService.signUp(signUpRequest)
             response
           }
         }

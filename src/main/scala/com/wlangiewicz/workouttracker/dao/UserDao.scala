@@ -2,12 +2,14 @@ package com.wlangiewicz.workouttracker.dao
 
 import com.wlangiewicz.workouttracker.domain._
 
-import scala.util.Random
-
 class UserDao {
   val users = scala.collection.mutable.Set(
     User(UserId(1), "user", "password", ApiKey("key"))
   )
+
+  def add(user: User) = {
+    users.add(user)
+  }
 
   def findByApiKey(apiKey: ApiKey) = {
     users.find(u => u.apiKey == apiKey)
@@ -25,24 +27,10 @@ class UserDao {
     users.find(u => u.userId == userId)
   }
 
-  def signUp(signUpRequest: SignUpUserRequest): Either[UnsuccessfulUserSignUpResponse, SuccessfulUserSignUpResponse] = {
-    if (loginExists(signUpRequest.login)) {
-      Left(UnsuccessfulUserSignUpResponse())
-    } else {
-      val newUserId = nextUserId
-      val apiKey = ApiKey(randomApiKey)
-      users.add(User(newUserId, signUpRequest.login, signUpRequest.password, apiKey))
-      Right(SuccessfulUserSignUpResponse(apiKey))
-    }
+  def loginExists(login: String) = users.exists(_.login == login)
 
-  }
-
-  def randomApiKey = Random.alphanumeric.take(16).mkString
-
-  private def nextUserId = {
+  def nextUserId = {
     val currentMaxUserId = users.map(_.userId.value).max
     UserId(currentMaxUserId + 1)
   }
-
-  def loginExists(login: String) = users.exists(_.login == login)
 }
