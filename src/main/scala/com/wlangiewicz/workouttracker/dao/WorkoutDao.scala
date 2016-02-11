@@ -43,7 +43,7 @@ class WorkoutDao {
   }
 
   def isValidWorkout(newWorkoutRequest: RecordWorkoutRequest): Boolean = {
-    newWorkoutRequest.date > DateTime.now - 100.years // bogus condition for invalid request
+    newWorkoutRequest.date > DateTime.now - 10.years // bogus condition for invalid request
   }
 
   def nextWorkoutId = {

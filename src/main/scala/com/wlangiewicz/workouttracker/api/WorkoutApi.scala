@@ -7,6 +7,7 @@ import com.wlangiewicz.workouttracker.dao._
 import com.wlangiewicz.workouttracker.domain._
 import com.wlangiewicz.workouttracker.dao.WorkoutDao
 import com.wlangiewicz.workouttracker.services.WorkoutService
+import akka.http.scaladsl.model.StatusCodes._
 
 trait WorkoutApi extends JsonFormats {
   val workoutDao: WorkoutDao
@@ -26,7 +27,10 @@ trait WorkoutApi extends JsonFormats {
           path("new") {
             (post & entity(as[RecordWorkoutRequest])) { newWorkoutRequest =>
               complete {
-                workoutService.recordNewWorkout(newWorkoutRequest)
+                workoutService.recordNewWorkout(newWorkoutRequest) match {
+                  case Left(e) => BadRequest -> s"invalid request: $newWorkoutRequest"
+                  case Right(response) => response
+                }
               }
             }
           }

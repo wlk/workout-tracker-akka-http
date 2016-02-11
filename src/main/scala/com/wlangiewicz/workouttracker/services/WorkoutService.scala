@@ -10,9 +10,7 @@ class WorkoutService(workoutDao: WorkoutDao) {
       Left(UnsuccessfulRecordWorkoutResponse())
     } else {
       val workoutId = workoutDao.nextWorkoutId
-      workoutDao
-        .add(Workout(newWorkoutRequest.userId, workoutId, newWorkoutRequest.name, newWorkoutRequest
-          .distanceMeters, newWorkoutRequest.durationSeconds, newWorkoutRequest.date))
+      workoutDao.add(Workout(newWorkoutRequest.userId, workoutId, newWorkoutRequest.name, newWorkoutRequest.distanceMeters, newWorkoutRequest.durationSeconds, newWorkoutRequest.date))
       Right(SuccessfulRecordWorkoutResponse(workoutId))
     }
   }

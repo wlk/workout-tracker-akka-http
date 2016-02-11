@@ -27,8 +27,7 @@ class WorkoutApiSpec extends ApiSpec {
   }
 
   it should "allow creating workouts" in {
-    val request = RecordWorkoutRequest(testingUser
-      .userId, "testing workout", 10000, 3600, new DateTime(2016, 2, 15, 12, 0, 0, 0))
+    val request = RecordWorkoutRequest(testingUser.userId, "testing workout", 10000, 3600, new DateTime(2016, 2, 15, 12, 0, 0, 0))
     Post("/workouts/new", request) ~> validCredentials ~> routes ~> check {
       status shouldBe OK
 
@@ -37,6 +36,13 @@ class WorkoutApiSpec extends ApiSpec {
         workouts.map(_.name) should contain("testing workout")
         workouts.map(_.workoutId) should contain theSameElementsAs workouts.map(_.workoutId).distinct
       }
+    }
+  }
+
+  it should "not allow creating invalid workouts" in {
+    val request = RecordWorkoutRequest(testingUser.userId, "testing workout", 10000, 3600, new DateTime(1970, 2, 15, 12, 0, 0, 0)) // invalid year
+    Post("/workouts/new", request) ~> validCredentials ~> routes ~> check {
+      status shouldBe BadRequest
     }
   }
 

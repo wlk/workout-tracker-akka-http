@@ -1,6 +1,7 @@
 package com.wlangiewicz.workouttracker.api
 
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
+import akka.http.scaladsl.model.StatusCodes._
 import akka.http.scaladsl.server.Directives._
 import com.wlangiewicz.workouttracker.dao.UserDao
 import com.wlangiewicz.workouttracker.domain._
@@ -26,7 +27,7 @@ trait UserApi extends JsonFormats {
               val maybeApiKey = userDao.apiKeyForUser(loginRequest.login, loginRequest.password)
               maybeApiKey match {
                 case Some(key) => key
-                case None => new RuntimeException("user not found")
+                case None => BadRequest -> "user not found"
               }
             }
           }
