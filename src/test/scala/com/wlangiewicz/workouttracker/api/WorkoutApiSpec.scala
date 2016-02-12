@@ -38,6 +38,7 @@ class WorkoutApiSpec extends ApiSpec {
       status shouldBe OK
 
       Get("/workouts/all") ~> validCredentials ~> routes ~> check {
+        status shouldBe OK
         val workouts = responseAs[List[Workout]]
         workouts.map(_.name) should contain("testing workout")
         workouts.map(_.workoutId) should contain theSameElementsAs workouts.map(_.workoutId).distinct
@@ -55,8 +56,9 @@ class WorkoutApiSpec extends ApiSpec {
   it should "allow user to delete it's own workout" in {
     val request = DeleteWorkoutRequest(WorkoutId(1))
     Delete("/workouts/delete", request) ~> validCredentials ~> routes ~> check {
-
+      status shouldBe OK
       Get("/workouts/all") ~> validCredentials ~> routes ~> check {
+        status shouldBe OK
         val workouts = responseAs[List[Workout]]
         workouts.map(_.workoutId) should not contain WorkoutId(1)
       }
@@ -75,10 +77,32 @@ class WorkoutApiSpec extends ApiSpec {
     }
   }
 
-  ignore should "allow user to edit workout he owns" in {
+  it should "allow user to edit workout he owns" in {
+    val request = UpdateWorkoutRequest(Workout(testingUser.userId, WorkoutId(3), "updating workout 1", 10000, 3600, new DateTime(2016, 2, 15, 12, 0, 0, 0)))
+
+    Post("/workouts/update", request) ~> validCredentials ~> routes ~> check {
+      status shouldBe OK
+
+      Get("/workouts/all") ~> validCredentials ~> routes ~> check {
+        val workouts = responseAs[List[Workout]]
+        val updatedWorkout = workouts.find(_.workoutId == WorkoutId(3)).get
+        updatedWorkout.name shouldBe "updating workout 1"
+      }
+    }
   }
 
-  ignore should "not allow user to edit someone's else workout" in {
+  it should "not allow user to edit someone's else workout" in {
+    val request = UpdateWorkoutRequest(Workout(testingUser.userId, WorkoutId(4), "updating workout 1 - this should fail", 10000, 3600, new DateTime(2016, 2, 15, 12, 0, 0, 0)))
+
+    Post("/workouts/update", request) ~> validCredentialsUserWithoutWorkouts ~> routes ~> check {
+      status shouldBe BadRequest
+
+      Get("/workouts/all") ~> validCredentials ~> routes ~> check {
+        val workouts = responseAs[List[Workout]]
+        val updatedWorkout = workouts.find(_.workoutId == WorkoutId(4)).get
+        updatedWorkout.name shouldBe "evening run 3"
+      }
+    }
   }
 
 }

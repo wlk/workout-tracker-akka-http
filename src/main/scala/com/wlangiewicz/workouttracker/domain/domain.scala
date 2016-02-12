@@ -22,6 +22,8 @@ case class Workout(userId: UserId, workoutId: WorkoutId, name: String, distanceM
 
 case class RecordWorkoutRequest(userId: UserId, name: String, distanceMeters: Int, durationSeconds: Int, date: DateTime)
 
+case class UpdateWorkoutRequest(workout: Workout)
+
 case class Report(totalDistanceMeters: Int, totalDurationSeconds: Int, averageDistance: Double, averageDuration: Double, averageSpeed: Double)
 
 case class DeleteWorkoutRequest(workoutId: WorkoutId)

@@ -36,9 +36,16 @@ trait WorkoutApi extends JsonFormats {
           } ~
           path("delete") {
             (delete & entity(as[DeleteWorkoutRequest])) { deleteRequest =>
-            complete {
-              workoutService.deleteWorkout(user, deleteRequest.workoutId)
+              complete {
+                workoutService.deleteWorkout(user, deleteRequest.workoutId)
+              }
             }
+          } ~
+          path("update") {
+            (post & entity(as[UpdateWorkoutRequest])) { updateRequest =>
+                complete {
+                  workoutService.updateWorkout(user, updateRequest.workout)
+                }
             }
           }
       }

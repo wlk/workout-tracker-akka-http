@@ -32,6 +32,7 @@ class WorkoutDao {
   def editWorkout(workout: Workout) = {
     deleteWorkout(workout.workoutId)
     workouts.add(workout)
+    workout
   }
 
   def deleteWorkout(workoutId: WorkoutId): Unit = {

@@ -7,6 +7,14 @@ import com.wlangiewicz.workouttracker.domain._
 import scala.util.{ Failure, Success, Try }
 
 class WorkoutService(workoutDao: WorkoutDao) {
+  def updateWorkout(user: User, updatedWorkout: Workout): Try[Workout] = {
+    if(workoutDao.isOwner(user.userId, updatedWorkout.workoutId)){
+      Success(workoutDao.editWorkout(updatedWorkout))
+    } else {
+      Failure(new ApiException("you are not allowed to edit this workout"))
+    }
+  }
+
 
   def deleteWorkout(user: User, workoutId: WorkoutId): Try[WorkoutId] = {
     if (workoutDao.isOwner(user.userId, workoutId)) {
