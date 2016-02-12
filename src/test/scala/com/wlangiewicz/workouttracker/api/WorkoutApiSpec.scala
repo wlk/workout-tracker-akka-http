@@ -105,4 +105,12 @@ class WorkoutApiSpec extends ApiSpec {
     }
   }
 
+  ignore should "return workouts only in given range" in {
+
+  }
+
+  ignore should "not return workouts if there are none in requested range" in {
+
+  }
+
 }
