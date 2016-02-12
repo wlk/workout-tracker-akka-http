@@ -3,6 +3,8 @@
 
 This is the server-side part of the simple web project based on akka-http.
 
+The intention here is to provide a reasonably sized project written in akka-http for everyone to take a look at.
+
 ## Objective
 
 Create an application that tracks workouts (jogging) for logged in users:
@@ -20,11 +22,21 @@ Create an application that tracks workouts (jogging) for logged in users:
 - Scala
 - nscala-time (Scala wrapper for Joda Time)
 
+## Parts of akka-http that are covered
+
+* routing
+* handling GET, POST, DELETE requests
+* exception handling
+* testing with `ScalatestRouteTest`
+* JSON formatting
+* Basic Authentication
+
 
 ## TODO
 
 Following things are left TODO (or some of them will not be done because it's just a demo project')
 * better error handling (returning correct HTTP codes + helpful messages)
-* not throwing exceptions (although there are not many places where this happens)
-* {User,Workout}Services control logic in which new Ids are created
+* stop throwing exceptions (although there are not many places where this happens)
+* {User,Workout}Services control logic in which new Ids are created (probably should be moved to Daos)
 * date marshalling (don't transfer it as timestamp)
+* switch from Basic Authentication to custom header (for example `X-Api-Token` or similar)
