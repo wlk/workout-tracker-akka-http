@@ -27,7 +27,7 @@ trait UserApi extends JsonFormats {
               val maybeApiKey = userDao.apiKeyForUser(loginRequest.login, loginRequest.password)
               maybeApiKey match {
                 case Some(key) => key
-                case None => BadRequest -> "user not found"
+                case None      => BadRequest -> "user not found"
               }
             }
           }

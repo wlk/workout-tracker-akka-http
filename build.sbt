@@ -1,3 +1,6 @@
+import scalariform.formatter.preferences._
+import com.typesafe.sbt.SbtScalariform
+
 enablePlugins(JavaAppPackaging)
 
 name := "workout-tracker-akka-http"
@@ -6,6 +9,8 @@ version := "1.0"
 scalaVersion := "2.11.7"
 
 scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8")
+
+resolvers += "Sonatype OSS Releases" at "https://oss.sonatype.org/service/local/staging/deploy/maven2"
 
 libraryDependencies ++= {
   val akkaVersion       = "2.4.1"
@@ -24,5 +29,14 @@ libraryDependencies ++= {
     "org.scalatest"     %% "scalatest"                            % scalaTestVersion % "test"
   )
 }
+
+SbtScalariform.scalariformSettings
+
+ScalariformKeys.preferences := ScalariformKeys.preferences.value
+  .setPreference(AlignSingleLineCaseStatements, true)
+  .setPreference(DoubleIndentClassDeclaration, true)
+  .setPreference(PreserveDanglingCloseParenthesis, true)
+  .setPreference(SpacesAroundMultiImports, false)
+  .setPreference(CompactControlReadability, true)
 
 Revolver.settings

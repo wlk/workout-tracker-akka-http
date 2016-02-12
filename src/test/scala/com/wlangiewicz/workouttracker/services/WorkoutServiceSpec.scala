@@ -2,7 +2,7 @@ package com.wlangiewicz.workouttracker.services
 
 import com.github.nscala_time.time.Imports._
 import com.wlangiewicz.workouttracker.WorkoutTrackerSpec
-import com.wlangiewicz.workouttracker.domain.{ WorkoutId, SuccessfulRecordWorkoutResponse, RecordWorkoutRequest }
+import com.wlangiewicz.workouttracker.domain.{WorkoutId, SuccessfulRecordWorkoutResponse, RecordWorkoutRequest}
 import org.scalatest.BeforeAndAfter
 
 class WorkoutServiceSpec extends WorkoutTrackerSpec with BeforeAndAfter {

@@ -11,7 +11,7 @@ trait JsonFormats extends DefaultJsonProtocol {
 
     override def read(json: JsValue): DateTime = json match {
       case JsNumber(millis) => new DateTime(millis.toLong)
-      case _ => throw new ApiException("incorrect json date format")
+      case _                => throw new ApiException("incorrect json date format")
     }
   }
 
