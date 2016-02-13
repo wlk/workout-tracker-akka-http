@@ -29,7 +29,7 @@ trait WorkoutApi extends JsonFormats {
             (post & entity(as[RecordWorkoutRequest])) { newWorkoutRequest =>
               complete {
                 workoutService.recordNewWorkout(newWorkoutRequest) match {
-                  case Left(e) => BadRequest -> s"invalid request: $newWorkoutRequest"
+                  case Left(e)         => BadRequest -> s"invalid request: $newWorkoutRequest"
                   case Right(response) => response
                 }
               }
@@ -61,8 +61,8 @@ trait WorkoutApi extends JsonFormats {
 
   def apiAuthentication(credentials: Credentials): Option[User] =
     credentials match {
-      case p@Credentials.Provided(id) => userDao.findByApiKey(ApiKey(id))
-      case Credentials.Missing => None
-      case _ => None
+      case p @ Credentials.Provided(id) => userDao.findByApiKey(ApiKey(id))
+      case Credentials.Missing          => None
+      case _                            => None
     }
 }

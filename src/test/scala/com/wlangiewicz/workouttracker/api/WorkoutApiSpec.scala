@@ -111,7 +111,7 @@ class WorkoutApiSpec extends ApiSpec {
 
       val workoutsFromRange = responseAs[List[Workout]]
       Get("/workouts/all") ~> validCredentials ~> routes ~> check {
-        responseAs[List[Workout]] should equal (workoutsFromRange)
+        responseAs[List[Workout]] should equal(workoutsFromRange)
       }
     }
 
@@ -120,7 +120,7 @@ class WorkoutApiSpec extends ApiSpec {
   it should "not return workouts if there are none in requested range" in {
     Get("/workouts/range/1/2") ~> validCredentials ~> routes ~> check {
       status shouldBe OK
-      responseAs[List[Workout]] should equal (List.empty[Workout])
+      responseAs[List[Workout]] should equal(List.empty[Workout])
     }
   }
 
