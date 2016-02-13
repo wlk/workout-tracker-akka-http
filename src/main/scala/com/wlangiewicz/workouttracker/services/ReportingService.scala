@@ -3,8 +3,8 @@ package com.wlangiewicz.workouttracker.services
 import com.wlangiewicz.workouttracker.domain._
 
 class ReportingService {
-  def weeklyReport(workouts: Set[Workout]): Map[Int, Report] = {
-    workouts.groupBy(_.date.getWeekOfWeekyear).map {
+  def weeklyReport(workouts: Set[Workout]): Map[(Int, Int), Report] = {
+    workouts.groupBy(w => (w.date.getYear, w.date.getWeekOfWeekyear)).map {
       case (week, weeklyWorkouts) => (week, report(weeklyWorkouts))
     }
   }

@@ -39,10 +39,11 @@ class ReportingServiceSpec extends WorkoutTrackerSpec {
     )
 
     val reports = reportingService.weeklyReport(workouts)
+    println(reports)
     reports.size shouldBe 3
-    reports(5).totalDistanceMeters shouldBe 30000
-    reports(6).totalDistanceMeters shouldBe 30000
-    reports(8).totalDistanceMeters shouldBe 20000
+    reports(2016, 5).totalDistanceMeters shouldBe 30000
+    reports(2016, 6).totalDistanceMeters shouldBe 30000
+    reports(2016, 8).totalDistanceMeters shouldBe 20000
   }
 
 }
