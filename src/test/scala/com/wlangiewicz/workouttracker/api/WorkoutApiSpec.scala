@@ -105,9 +105,10 @@ class WorkoutApiSpec extends ApiSpec {
     }
   }
 
-  ignore should "return workouts only in given range" in {
-    Get("/workouts/1355354589/1455354589") ~> validCredentials ~> routes ~> check {
+  it should "return workouts only in given range" in {
+    Get("/workouts/range/1355354589/1465354589") ~> validCredentials ~> routes ~> check {
       status shouldBe OK
+
       val workoutsFromRange = responseAs[List[Workout]]
       Get("/workouts/all") ~> validCredentials ~> routes ~> check {
         responseAs[List[Workout]] should equal (workoutsFromRange)
@@ -116,8 +117,8 @@ class WorkoutApiSpec extends ApiSpec {
 
   }
 
-  ignore should "not return workouts if there are none in requested range" in {
-    Get("/workouts/1/2") ~> validCredentials ~> routes ~> check {
+  it should "not return workouts if there are none in requested range" in {
+    Get("/workouts/range/1/2") ~> validCredentials ~> routes ~> check {
       status shouldBe OK
       responseAs[List[Workout]] should equal (List.empty[Workout])
     }

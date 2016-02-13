@@ -8,6 +8,7 @@ import com.wlangiewicz.workouttracker.domain._
 import com.wlangiewicz.workouttracker.dao.WorkoutDao
 import com.wlangiewicz.workouttracker.services.WorkoutService
 import akka.http.scaladsl.model.StatusCodes._
+import com.github.nscala_time.time.Imports._
 
 trait WorkoutApi extends JsonFormats {
   val workoutDao: WorkoutDao
@@ -28,7 +29,7 @@ trait WorkoutApi extends JsonFormats {
             (post & entity(as[RecordWorkoutRequest])) { newWorkoutRequest =>
               complete {
                 workoutService.recordNewWorkout(newWorkoutRequest) match {
-                  case Left(e)         => BadRequest -> s"invalid request: $newWorkoutRequest"
+                  case Left(e) => BadRequest -> s"invalid request: $newWorkoutRequest"
                   case Right(response) => response
                 }
               }
@@ -47,14 +48,21 @@ trait WorkoutApi extends JsonFormats {
                 workoutService.updateWorkout(user, updateRequest.workout)
               }
             }
+          } ~
+          path("range" / IntNumber / IntNumber) { (rangeStart, rangeEnd) =>
+            get {
+              complete {
+                workoutDao.findInDateRangeByUser(user.userId, new DateTime(rangeStart.toLong * 1000), new DateTime(rangeEnd.toLong * 1000))
+              }
+            }
           }
       }
     }
 
   def apiAuthentication(credentials: Credentials): Option[User] =
     credentials match {
-      case p @ Credentials.Provided(id) => userDao.findByApiKey(ApiKey(id))
-      case Credentials.Missing          => None
-      case _                            => None
+      case p@Credentials.Provided(id) => userDao.findByApiKey(ApiKey(id))
+      case Credentials.Missing => None
+      case _ => None
     }
 }
