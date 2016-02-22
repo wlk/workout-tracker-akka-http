@@ -9,16 +9,16 @@ class WorkoutDaoSpec extends WorkoutTrackerSpec with BeforeAndAfter {
 
   before {
     def cleanupWorkoutDao() = {
-      workoutDao.workouts.clear()
+      workoutDao.workouts = Set()
 
-      val testingWorkouts = scala.collection.mutable.Set(
+      val testingWorkouts = Set(
         Workout(UserId(1), WorkoutId(1), "morning run", 10000, 3700, new DateTime(2016, 2, 9, 11, 0, 0, 0)),
         Workout(UserId(1), WorkoutId(2), "evening run", 10000, 3650, new DateTime(2016, 2, 9, 12, 0, 0, 0)),
         Workout(UserId(1), WorkoutId(3), "morning run 2", 10000, 3600, new DateTime(2016, 2, 10, 12, 0, 0, 0)),
         Workout(UserId(1), WorkoutId(4), "evening run 3", 10000, 3550, new DateTime(2016, 2, 15, 12, 0, 0, 0))
       )
 
-      testingWorkouts.foreach(workoutDao.workouts.add)
+      testingWorkouts.foreach(workoutDao.add)
     }
 
     cleanupWorkoutDao()

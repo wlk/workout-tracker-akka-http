@@ -4,7 +4,7 @@ import com.github.nscala_time.time.Imports._
 import com.wlangiewicz.workouttracker.domain._
 
 class WorkoutDao {
-  val workouts = scala.collection.mutable.Set(
+  var workouts = Set(
     Workout(UserId(1), WorkoutId(1), "morning run", 10000, 3700, new DateTime(2016, 2, 9, 11, 0, 0, 0)),
     Workout(UserId(1), WorkoutId(2), "evening run", 10000, 3650, new DateTime(2016, 2, 9, 12, 0, 0, 0)),
     Workout(UserId(1), WorkoutId(3), "morning run 2", 10000, 3600, new DateTime(2016, 2, 10, 12, 0, 0, 0)),
@@ -12,7 +12,7 @@ class WorkoutDao {
   )
 
   def add(workout: Workout) = {
-    workouts.add(workout)
+    workouts = workouts + workout
   }
 
   def findAllByUserInRangeGroupedWeekly(userId: UserId, rangeStart: DateTime, rangeEnd: DateTime) = {
@@ -20,23 +20,23 @@ class WorkoutDao {
   }
 
   def findInDateRangeByUser(userId: UserId, rangeStart: DateTime, rangeEnd: DateTime) = {
-    workouts.filter(w => w.userId == userId && w.date >= rangeStart && w.date <= rangeEnd).toSet
+    workouts.filter(w => w.userId == userId && w.date >= rangeStart && w.date <= rangeEnd)
   }
 
   def findAllByUserGroupedWeekly(userId: UserId): Map[Int, Set[Workout]] = {
     findAllByUser(userId).groupBy(_.date.getWeekOfWeekyear)
   }
 
-  def findAllByUser(userId: UserId): Set[Workout] = workouts.filter(w => w.userId == userId).toSet
+  def findAllByUser(userId: UserId): Set[Workout] = workouts.filter(w => w.userId == userId)
 
   def editWorkout(workout: Workout) = {
     deleteWorkout(workout.workoutId)
-    workouts.add(workout)
+    add(workout)
     workout
   }
 
   def deleteWorkout(workoutId: WorkoutId): Unit = {
-    workouts.find(_.workoutId == workoutId).foreach(workouts.remove)
+    workouts.find(_.workoutId == workoutId).foreach(w => workouts = workouts - w)
   }
 
   def isOwner(userId: UserId, workoutId: WorkoutId) = {

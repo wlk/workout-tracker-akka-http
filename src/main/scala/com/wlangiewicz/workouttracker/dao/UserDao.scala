@@ -3,13 +3,13 @@ package com.wlangiewicz.workouttracker.dao
 import com.wlangiewicz.workouttracker.domain._
 
 class UserDao {
-  val users = scala.collection.mutable.Set(
+  var users = Set(
     User(UserId(1), "user", "password", ApiKey("key")),
     User(UserId(2), "userWithoutWorkouts", "password", ApiKey("aosijdf2309g"))
   )
 
   def add(user: User) = {
-    users.add(user)
+    users = users + user
   }
 
   def findByApiKey(apiKey: ApiKey) = {

@@ -18,8 +18,8 @@ trait WorkoutTrackerSpec extends FlatSpec with Matchers {
   val testingUserNoWorkouts = userDao.findByUserId(UserId(2)).get
 
   def cleanupUserDao() = {
-    userDao.users.clear()
-    userDao.users.add(User(UserId(1), "user", "password", testingUser.apiKey))
-    userDao.users.add(User(UserId(2), "userWithoutWorkouts", "password", testingUserNoWorkouts.apiKey))
+    userDao.users = Set()
+    userDao.add(User(UserId(1), "user", "password", testingUser.apiKey))
+    userDao.add(User(UserId(2), "userWithoutWorkouts", "password", testingUserNoWorkouts.apiKey))
   }
 }
