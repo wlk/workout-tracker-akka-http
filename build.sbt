@@ -6,7 +6,7 @@ enablePlugins(JavaAppPackaging)
 name := "workout-tracker-akka-http"
 organization := "com.wlangiewicz"
 version := "1.0"
-scalaVersion := "2.11.7"
+scalaVersion := "2.11.8"
 
 scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8")
 
