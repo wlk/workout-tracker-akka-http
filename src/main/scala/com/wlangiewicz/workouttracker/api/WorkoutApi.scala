@@ -55,6 +55,20 @@ trait WorkoutApi extends JsonFormats {
                 workoutDao.findInDateRangeByUser(user.userId, new DateTime(rangeStart.toLong * 1000), new DateTime(rangeEnd.toLong * 1000))
               }
             }
+          } ~
+          path("grouped") {
+            get {
+              complete {
+                workoutDao.findAllByUserGroupedWeekly(user.userId)
+              }
+            }
+          } ~
+          path("grouped" / IntNumber / IntNumber) { (rangeStart, rangeEnd) =>
+            get {
+              complete {
+                workoutDao.findAllByUserInRangeGroupedWeekly(user.userId, new DateTime(rangeStart.toLong * 1000), new DateTime(rangeEnd.toLong * 1000))
+              }
+            }
           }
       }
     }

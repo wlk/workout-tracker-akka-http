@@ -15,16 +15,21 @@ class WorkoutDao {
     workouts = workouts + workout
   }
 
-  def findAllByUserInRangeGroupedWeekly(userId: UserId, rangeStart: DateTime, rangeEnd: DateTime) = {
-    findInDateRangeByUser(userId, rangeStart, rangeEnd).groupBy(_.date.getWeekOfWeekyear)
+  // Using String instead of [Int, Int] as Map key - spray-json bug: https://github.com/spray/spray-json/issues/125
+  private def sprayBugWorkaround(m: Map[(Int, Int), Set[Workout]]) = m.map(w => (w._1._1.toString + "-" + w._1._2.toString, w._2))
+
+  // Using String instead of [Int, Int] as Map key - spray-json bug: https://github.com/spray/spray-json/issues/125
+  def findAllByUserInRangeGroupedWeekly(userId: UserId, rangeStart: DateTime, rangeEnd: DateTime): Map[String, Set[Workout]] = {
+    sprayBugWorkaround(findInDateRangeByUser(userId, rangeStart, rangeEnd).groupBy(w => (w.date.getYear, w.date.getWeekOfWeekyear)))
   }
 
   def findInDateRangeByUser(userId: UserId, rangeStart: DateTime, rangeEnd: DateTime) = {
     workouts.filter(w => w.userId == userId && w.date >= rangeStart && w.date <= rangeEnd)
   }
 
-  def findAllByUserGroupedWeekly(userId: UserId): Map[Int, Set[Workout]] = {
-    findAllByUser(userId).groupBy(_.date.getWeekOfWeekyear)
+  // Using String instead of [Int, Int] as Map key - spray-json bug: https://github.com/spray/spray-json/issues/125
+  def findAllByUserGroupedWeekly(userId: UserId): Map[String, Set[Workout]] = {
+    sprayBugWorkaround(findAllByUser(userId).groupBy(w => (w.date.getYear, w.date.getWeekOfWeekyear)))
   }
 
   def findAllByUser(userId: UserId): Set[Workout] = workouts.filter(w => w.userId == userId)

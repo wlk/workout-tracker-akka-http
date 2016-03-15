@@ -67,8 +67,8 @@ class WorkoutDaoSpec extends WorkoutTrackerSpec with BeforeAndAfter {
   it should "find workouts grouped by week" in {
     val workoutsGrouped = workoutDao.findAllByUserGroupedWeekly(testingUser.userId)
     workoutsGrouped.size shouldBe 2
-    workoutsGrouped(6).size shouldBe 3
-    workoutsGrouped(6).find(_.workoutId == WorkoutId(2)).get.name shouldBe "evening run"
+    workoutsGrouped("2016-6").size shouldBe 3
+    workoutsGrouped("2016-6").find(_.workoutId == WorkoutId(2)).get.name shouldBe "evening run"
   }
 
   it should "find workouts grouped by week for given range" in {
@@ -77,6 +77,6 @@ class WorkoutDaoSpec extends WorkoutTrackerSpec with BeforeAndAfter {
     val rangeEnd = date + 1.day
     val workoutsGrouped = workoutDao.findAllByUserInRangeGroupedWeekly(testingUser.userId, rangeStart, rangeEnd)
     workoutsGrouped.size shouldBe 1
-    workoutsGrouped(6).find(_.workoutId == WorkoutId(1)).get.distanceMeters shouldBe 10000
+    workoutsGrouped("2016-6").find(_.workoutId == WorkoutId(1)).get.distanceMeters shouldBe 10000
   }
 }

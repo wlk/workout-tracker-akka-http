@@ -124,12 +124,27 @@ class WorkoutApiSpec extends ApiSpec {
     }
   }
 
-  ignore should "return workouts grouped by (year, week)" in {
-
+  it should "return workouts grouped by (year, week)" in {
+    Get("/workouts/grouped") ~> validCredentials ~> routes ~> check {
+      status shouldBe OK
+      val workouts = responseAs[Map[String, Set[Workout]]]
+      workouts("2016-6").head.distanceMeters shouldBe 10000
+    }
   }
 
-  ignore should "return no grouped workouts if there are none in given (year, week)" in {
+  it should "return workouts in range grouped by (year, week)" in {
+    Get("/workouts/grouped/1355354589/1465354589") ~> validCredentials ~> routes ~> check {
+      status shouldBe OK
+      val workouts = responseAs[Map[String, Set[Workout]]]
+      workouts("2016-6").head.distanceMeters shouldBe 10000
+    }
+  }
 
+  it should "return no grouped workouts if there are none in given (year, week)" in {
+    Get("/workouts/grouped/1/2") ~> validCredentials ~> routes ~> check {
+      status shouldBe OK
+      responseAs[Map[String, Set[Workout]]] should equal(Map.empty[String, Set[Workout]])
+    }
   }
 
 }
