@@ -5,6 +5,9 @@ This is the server-side part of the simple web project based on akka-http.
 
 The intention here is to provide a reasonably sized project written in akka-http for everyone to take a look at.
 
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
+
 ## Objective
 
 Create an application that tracks workouts (jogging) for logged in users:
