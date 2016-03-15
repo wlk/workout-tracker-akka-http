@@ -35,8 +35,7 @@ SbtScalariform.scalariformSettings
 ScalariformKeys.preferences := ScalariformKeys.preferences.value
   .setPreference(AlignSingleLineCaseStatements, true)
   .setPreference(DoubleIndentClassDeclaration, true)
-  .setPreference(PreserveDanglingCloseParenthesis, true)
   .setPreference(SpacesAroundMultiImports, false)
-  .setPreference(CompactControlReadability, true)
+  .setPreference(CompactControlReadability, false)
 
 Revolver.settings
