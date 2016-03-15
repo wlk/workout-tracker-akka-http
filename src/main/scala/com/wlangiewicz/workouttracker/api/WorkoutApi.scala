@@ -2,7 +2,6 @@ package com.wlangiewicz.workouttracker.api
 
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import akka.http.scaladsl.server.Directives._
-import akka.http.scaladsl.server.directives.Credentials
 import com.wlangiewicz.workouttracker.dao._
 import com.wlangiewicz.workouttracker.domain._
 import com.wlangiewicz.workouttracker.dao.WorkoutDao
@@ -11,6 +10,7 @@ import akka.http.scaladsl.model.StatusCodes._
 import com.github.nscala_time.time.Imports._
 
 trait WorkoutApi extends JsonFormats {
+  this: Api =>
   val workoutDao: WorkoutDao
   val userDao: UserDao
   val workoutService: WorkoutService
@@ -71,12 +71,5 @@ trait WorkoutApi extends JsonFormats {
             }
           }
       }
-    }
-
-  def apiAuthentication(credentials: Credentials): Option[User] =
-    credentials match {
-      case p @ Credentials.Provided(id) => userDao.findByApiKey(ApiKey(id))
-      case Credentials.Missing          => None
-      case _                            => None
     }
 }

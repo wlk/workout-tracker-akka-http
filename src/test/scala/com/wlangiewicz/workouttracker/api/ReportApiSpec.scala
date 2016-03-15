@@ -1,9 +1,18 @@
 package com.wlangiewicz.workouttracker.api
 
+import akka.http.scaladsl.model.StatusCodes._
+import com.wlangiewicz.workouttracker.domain._
+import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
+
 class ReportApiSpec extends ApiSpec {
 
-  ignore should "return report for all workouts" in {
-
+  it should "return report for all workouts" in {
+    Get("/report/all") ~> validCredentials ~> routes ~> check {
+      status shouldBe OK
+      val weeklyReport = responseAs[Map[String, Report]]
+      weeklyReport("2016-6").totalDistanceMeters shouldBe 30000
+      weeklyReport("2016-7").totalDistanceMeters shouldBe 10000
+    }
   }
 
   ignore should "not return report if user has no workouts" in {
