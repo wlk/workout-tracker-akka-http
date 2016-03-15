@@ -7,7 +7,6 @@ The intention here is to provide a reasonably sized project written in akka-http
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
-
 ## Objective
 
 Create an application that tracks workouts (jogging) for logged in users:
@@ -43,3 +42,53 @@ Following things are left TODO (or some of them will not be done because it's ju
 * {User,Workout}Services control logic in which new Ids are created (probably should be moved to Daos)
 * date marshalling (don't transfer it as timestamp)
 * switch from Basic Authentication to custom header (for example `X-Api-Token` or similar)
+* add persistence
+
+## Testing
+
+Here's a brief list of `curl` commands that you can use to test some parts of the API
+
+```bash
+curl http://workout-tracker-akka-http.herokuapp.com/ping
+
+
+curl -H "Content-Type: application/json" -X POST --data "{\"login\":\"w\",\"password\":\"w\"}" http://workout-tracker-akka-http.herokuapp.com/user/signup
+
+# you will get response:
+#{
+#  "apiKey": {
+#    "apiKey": "VhTDQbmQ3u81mVg3"
+#  }
+#}
+
+API_KEY=VhTDQbmQ3u81mVg3
+
+# you need to use "apiKey" as username in the basic auth
+
+curl --user ${API_KEY}: http://workout-tracker-akka-http.herokuapp.com/workouts/all
+
+# no workouts - this is expected
+
+curl --user ${API_KEY}: -H "Content-Type: application/json" -X POST --data "{\"name\":\"morning run\",\"distanceMeters\":10000,\"durationSeconds\":3600,\"date\":1458040279000}" http://workout-tracker-akka-http.herokuapp.com/workouts/new
+
+# added first workout
+
+curl --user ${API_KEY}: -H "Content-Type: application/json" -X POST --data "{\"name\":\"morning run some time ago\",\"distanceMeters\":10000,\"durationSeconds\":3600,\"date\":1428040279000}" http://workout-tracker-akka-http.herokuapp.com/workouts/new
+
+curl --user ${API_KEY}: -H "Content-Type: application/json" -X POST --data "{\"name\":\"evening run some time ago\",\"distanceMeters\":8000,\"durationSeconds\":2300,\"date\":1428044279000}" http://workout-tracker-akka-http.herokuapp.com/workouts/new
+
+
+# added second and  workout
+
+# now we should see some workouts
+
+curl --user ${API_KEY}: http://workout-tracker-akka-http.herokuapp.com/workouts/all
+
+# let's see the reports:
+
+curl --user ${API_KEY}: http://workout-tracker-akka-http.herokuapp.com/report/all
+
+curl --user ${API_KEY}: http://workout-tracker-akka-http.herokuapp.com/report/weekly
+
+
+```
