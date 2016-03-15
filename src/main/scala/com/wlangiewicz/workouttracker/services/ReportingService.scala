@@ -14,7 +14,7 @@ class ReportingService {
     )
   }
 
-  def report(workouts: Set[Workout]) = {
+  def report(workouts: Set[Workout]): Report = {
     val elements = workouts.size
 
     val totalDistance = workouts.toSeq.map(_.distanceMeters).sum
