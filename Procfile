@@ -1,0 +1,1 @@
+web: target/universal/stage/bin/workout-tracker-akka-http -Dhttp.port=$PORT

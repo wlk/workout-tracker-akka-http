@@ -32,5 +32,11 @@ trait UserApi extends JsonFormats {
             }
           }
         }
-    }
+    } ~
+      // path for heroku validation
+      path("ping") {
+        complete {
+          "pong"
+        }
+      }
 }

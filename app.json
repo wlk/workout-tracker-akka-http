@@ -1,0 +1,6 @@
+{
+  "name": "Workout Tracker - Akka HTTP",
+  "description": "Simple demo project using Akka HTTP. Log your workouts, generate reports",
+  "website": "https://github.com/wlk/workout-tracker-akka-http",
+  "success_url": "/ping"
+}
