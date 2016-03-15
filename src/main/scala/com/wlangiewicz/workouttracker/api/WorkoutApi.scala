@@ -27,7 +27,7 @@ trait WorkoutApi extends JsonFormats {
           path("new") {
             (post & entity(as[RecordWorkoutRequest])) { newWorkoutRequest =>
               complete {
-                workoutService.recordNewWorkout(newWorkoutRequest) match {
+                workoutService.recordNewWorkout(user.userId, newWorkoutRequest) match {
                   case Left(e)         => BadRequest -> s"invalid request: $newWorkoutRequest"
                   case Right(response) => response
                 }

@@ -33,7 +33,7 @@ class WorkoutApiSpec extends ApiSpec {
   }
 
   it should "allow creating workouts" in {
-    val request = RecordWorkoutRequest(testingUser.userId, "testing workout", 10000, 3600, new DateTime(2016, 2, 15, 12, 0, 0, 0))
+    val request = RecordWorkoutRequest("testing workout", 10000, 3600, new DateTime(2016, 2, 15, 12, 0, 0, 0))
     Post("/workouts/new", request) ~> validCredentials ~> routes ~> check {
       status shouldBe OK
 
@@ -47,7 +47,7 @@ class WorkoutApiSpec extends ApiSpec {
   }
 
   it should "not allow creating invalid workouts" in {
-    val request = RecordWorkoutRequest(testingUser.userId, "testing workout", 10000, 3600, new DateTime(1970, 2, 15, 12, 0, 0, 0)) // year out of allowed range
+    val request = RecordWorkoutRequest("testing workout", 10000, 3600, new DateTime(1970, 2, 15, 12, 0, 0, 0)) // year out of allowed range
     Post("/workouts/new", request) ~> validCredentials ~> routes ~> check {
       status shouldBe BadRequest
     }

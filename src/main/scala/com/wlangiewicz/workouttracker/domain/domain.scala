@@ -20,7 +20,7 @@ case class LoginUserRequest(login: String, password: String)
 
 case class Workout(userId: UserId, workoutId: WorkoutId, name: String, distanceMeters: Int, durationSeconds: Int, date: DateTime)
 
-case class RecordWorkoutRequest(userId: UserId, name: String, distanceMeters: Int, durationSeconds: Int, date: DateTime)
+case class RecordWorkoutRequest(name: String, distanceMeters: Int, durationSeconds: Int, date: DateTime)
 
 case class UpdateWorkoutRequest(workout: Workout)
 

@@ -26,7 +26,7 @@ trait JsonFormats extends DefaultJsonProtocol {
   implicit val UserIdFormat = jsonFormat1(UserId)
   implicit val WorkoutIdFormat = jsonFormat1(WorkoutId)
 
-  implicit val RecordWorkoutRequestFormat = jsonFormat5(RecordWorkoutRequest)
+  implicit val RecordWorkoutRequestFormat = jsonFormat4(RecordWorkoutRequest)
   implicit val SuccessfulRecordWorkoutResponseFormat = jsonFormat1(SuccessfulRecordWorkoutResponse)
   implicit val UnsuccessfulRecordWorkoutResponseFormat = jsonFormat0(UnsuccessfulRecordWorkoutResponse)
 

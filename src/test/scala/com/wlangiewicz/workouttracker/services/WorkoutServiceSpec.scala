@@ -9,9 +9,9 @@ class WorkoutServiceSpec extends WorkoutTrackerSpec with BeforeAndAfter {
   "WorkoutService" should "record new workouts" in {
     workoutDao.findAllByUser(testingUser.userId).size shouldBe 4
 
-    val newWorkoutRequest = RecordWorkoutRequest(testingUser.userId, "testing my new gps watch", 1000, 600, DateTime.now)
+    val newWorkoutRequest = RecordWorkoutRequest("testing my new gps watch", 1000, 600, DateTime.now)
 
-    workoutService.recordNewWorkout(newWorkoutRequest).right.get shouldBe an[SuccessfulRecordWorkoutResponse]
+    workoutService.recordNewWorkout(testingUser.userId, newWorkoutRequest).right.get shouldBe an[SuccessfulRecordWorkoutResponse]
 
     workoutDao.findAllByUser(testingUser.userId).size shouldBe 5
 

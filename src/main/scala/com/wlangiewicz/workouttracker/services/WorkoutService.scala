@@ -24,12 +24,12 @@ class WorkoutService(workoutDao: WorkoutDao) {
     }
   }
 
-  def recordNewWorkout(newWorkoutRequest: RecordWorkoutRequest): Either[UnsuccessfulRecordWorkoutResponse, SuccessfulRecordWorkoutResponse] = {
+  def recordNewWorkout(userId: UserId, newWorkoutRequest: RecordWorkoutRequest): Either[UnsuccessfulRecordWorkoutResponse, SuccessfulRecordWorkoutResponse] = {
     if (!workoutDao.isValidWorkout(newWorkoutRequest)) {
       Left(UnsuccessfulRecordWorkoutResponse())
     } else {
       val workoutId = workoutDao.nextWorkoutId
-      workoutDao.add(Workout(newWorkoutRequest.userId, workoutId, newWorkoutRequest.name, newWorkoutRequest.distanceMeters, newWorkoutRequest.durationSeconds, newWorkoutRequest.date))
+      workoutDao.add(Workout(userId, workoutId, newWorkoutRequest.name, newWorkoutRequest.distanceMeters, newWorkoutRequest.durationSeconds, newWorkoutRequest.date))
       Right(SuccessfulRecordWorkoutResponse(workoutId))
     }
   }
