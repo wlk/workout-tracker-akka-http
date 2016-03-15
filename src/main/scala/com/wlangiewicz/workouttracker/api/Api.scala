@@ -3,8 +3,8 @@ package com.wlangiewicz.workouttracker.api
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.HttpResponse
 import akka.http.scaladsl.model.StatusCodes._
-import akka.http.scaladsl.server._
 import akka.http.scaladsl.server.Directives._
+import akka.http.scaladsl.server._
 import akka.http.scaladsl.server.directives.Credentials
 import com.wlangiewicz.workouttracker.domain.{ApiKey, User}
 

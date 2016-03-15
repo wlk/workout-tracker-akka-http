@@ -1,8 +1,8 @@
 package com.wlangiewicz.workouttracker.api
 
+import com.github.nscala_time.time.Imports._
 import com.wlangiewicz.workouttracker.domain._
 import spray.json._
-import com.github.nscala_time.time.Imports._
 
 trait JsonFormats extends DefaultJsonProtocol {
 

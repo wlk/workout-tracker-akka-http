@@ -4,7 +4,7 @@ import com.wlangiewicz.workouttracker.api.ApiException
 import com.wlangiewicz.workouttracker.dao.WorkoutDao
 import com.wlangiewicz.workouttracker.domain._
 
-import scala.util.{ Failure, Success, Try }
+import scala.util.{Failure, Success, Try}
 
 class WorkoutService(workoutDao: WorkoutDao) {
   def updateWorkout(user: User, updatedWorkout: Workout): Try[Workout] = {

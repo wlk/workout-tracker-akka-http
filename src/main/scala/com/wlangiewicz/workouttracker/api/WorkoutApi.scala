@@ -1,13 +1,12 @@
 package com.wlangiewicz.workouttracker.api
 
-import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
-import akka.http.scaladsl.server.Directives._
-import com.wlangiewicz.workouttracker.dao._
-import com.wlangiewicz.workouttracker.domain._
-import com.wlangiewicz.workouttracker.dao.WorkoutDao
-import com.wlangiewicz.workouttracker.services.WorkoutService
 import akka.http.scaladsl.model.StatusCodes._
+import akka.http.scaladsl.server.Directives._
 import com.github.nscala_time.time.Imports._
+import com.wlangiewicz.workouttracker.dao.{WorkoutDao, _}
+import com.wlangiewicz.workouttracker.domain._
+import com.wlangiewicz.workouttracker.services.WorkoutService
+import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 
 trait WorkoutApi extends JsonFormats {
   this: Api =>
